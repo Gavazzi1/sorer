@@ -116,9 +116,9 @@ where
                 continue;
             }
             Some(data) => {
-                data.iter()
-                    .enumerate()
-                    .for_each(|(i, d)| parsed_data.get_mut(i).unwrap().push(d.clone()));
+                for (i, d) in data.into_iter().enumerate() {
+                    parsed_data.get_mut(i).unwrap().push(d);
+                }
             }
         }
         buffer.clear();
