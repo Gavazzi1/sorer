@@ -39,7 +39,6 @@ impl fmt::Display for Data {
     }
 }
 
-#[inline(always)]
 fn parse_bool(i: &[u8]) -> IResult<&[u8], Data> {
     let (remaining_input, b) = alt((tag("1"), tag("0")))(i)?;
     match b {
@@ -49,7 +48,6 @@ fn parse_bool(i: &[u8]) -> IResult<&[u8], Data> {
     }
 }
 
-#[inline(always)]
 fn parse_delimited_bool(i: &[u8]) -> IResult<&[u8], Data> {
     delimited(
         terminated(tag("<"), multispace0),
@@ -58,7 +56,6 @@ fn parse_delimited_bool(i: &[u8]) -> IResult<&[u8], Data> {
     )(i)
 }
 
-#[inline(always)]
 fn parse_int(i: &[u8]) -> IResult<&[u8], Data> {
     let (remaining_input, (sign, number)) = tuple((opt(alt((tag("+"), tag("-")))), digit1))(i)?;
     let multiplier = match sign {
@@ -75,7 +72,6 @@ fn parse_int(i: &[u8]) -> IResult<&[u8], Data> {
     Ok((remaining_input, Data::Int(num)))
 }
 
-#[inline(always)]
 fn parse_delimited_int(i: &[u8]) -> IResult<&[u8], Data> {
     delimited(
         terminated(tag("<"), multispace0),
@@ -84,7 +80,6 @@ fn parse_delimited_int(i: &[u8]) -> IResult<&[u8], Data> {
     )(i)
 }
 
-#[inline(always)]
 fn parse_string(i: &[u8]) -> IResult<&[u8], Data> {
     // not unsafe because the spec guarantees only c++ characters in any field
     map(
@@ -93,7 +88,6 @@ fn parse_string(i: &[u8]) -> IResult<&[u8], Data> {
     )(i)
 }
 
-#[inline(always)]
 fn parse_delimited_string(i: &[u8]) -> IResult<&[u8], Data> {
     delimited(
         terminated(tag("<"), multispace0),
@@ -102,12 +96,10 @@ fn parse_delimited_string(i: &[u8]) -> IResult<&[u8], Data> {
     )(i)
 }
 
-#[inline(always)]
 fn parse_float(i: &[u8]) -> IResult<&[u8], Data> {
     map(double, Data::Float)(i)
 }
 
-#[inline(always)]
 fn parse_delimited_float(i: &[u8]) -> IResult<&[u8], Data> {
     delimited(
         terminated(tag("<"), multispace0),
@@ -116,12 +108,10 @@ fn parse_delimited_float(i: &[u8]) -> IResult<&[u8], Data> {
     )(i)
 }
 
-#[inline(always)]
 fn parse_null(i: &[u8]) -> IResult<&[u8], Data> {
     map(multispace0, |_| Data::Null)(i)
 }
 
-#[inline(always)]
 fn parse_delimited_null(i: &[u8]) -> IResult<&[u8], Data> {
     delimited(
         terminated(tag("<"), multispace0),
